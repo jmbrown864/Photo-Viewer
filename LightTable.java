@@ -22,6 +22,10 @@ public class LightTable extends JPanel {
 		this.setLayout(new BorderLayout());
 		// this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
 		this.setBackground(Color.GRAY);
+
+// RECOGNIZER STUFF ===========================================================
+		Recognizer r = new Recognizer();
+		System.out.println(r.defineRegex(Recognizer.Gesture.NEXT.template));
 	}
 
 	public void setViewMode(JRadioButtonMenuItem mode) {

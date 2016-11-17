@@ -127,7 +127,8 @@ public class PhotoComponent extends JComponent {
 						currPoint = new Point(e.getX(), e.getY());
 					}
 
-				}
+				} 
+
 				repaint();
 			}
 
@@ -166,8 +167,6 @@ public class PhotoComponent extends JComponent {
 				g2d.fill3DRect((int) startPoint.getX(), (int) startPoint.getY(), width, height, false);
 			}
 
-		} else if (!flipped) {
-			g2d.drawImage(image, leftPos, topPos, this);
-		}
+		} 
 	}
 }
