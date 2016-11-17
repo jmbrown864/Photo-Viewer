@@ -7,7 +7,8 @@ public class Recognizer {
 
 	public enum Gesture {
 
-		NEXT(new String[] {"SE", "SW"});
+		NEXT(new String[] {"SE", "SW"}),
+		PREV(new String[] {"SW", "SE"});
 
 		public final String[] template;
 
@@ -32,8 +33,37 @@ public class Recognizer {
 
 		for (int i = 0; i < template.length; i++) {
 			switch (template[i]) {
-				case "SE": buffer.append("[ECS]+");
-				case "SW": buffer.append("[SDW]+");
+				case "N" : 
+					buffer.append("[ANB]+");
+					break;
+				
+				case "NE": 
+					buffer.append("[NBE]+");
+					break;
+				
+				case "E" : 
+					buffer.append("[BEC]+");
+					break;
+				
+				case "SE": 
+					buffer.append("[ECS]+");
+					break;
+
+				case "S" : 
+					buffer.append("[CSD]+");
+					break;
+
+				case "SW": 
+					buffer.append("[SDW]+");
+					break;
+
+				case "W" : 
+					buffer.append("[DWA]+");
+					break;
+
+				case "NW": 
+					buffer.append("[WAN]+");
+					break;
 			}
 		}
 

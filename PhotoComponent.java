@@ -26,6 +26,10 @@ public class PhotoComponent extends JComponent {
 	// hold sticky notes
 	ArrayList<StickyNote> notes = new ArrayList<StickyNote>();
 
+	// Recognizer
+	Recognizer r = new Recognizer();
+	ArrayList<Point> stroke = new ArrayList<Point>();
+
 	public PhotoComponent(File path) {
 
 		try {
@@ -101,7 +105,9 @@ public class PhotoComponent extends JComponent {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				// show drawing on mouse release
-				if (annotationMode == "Text") {
+				if (!flipped && stroke.size() > 0) {
+					System.out.println(r.match(r.buildVector(stroke)).name());
+				} else if (annotationMode == "Text") {
 					StickyNote note = new StickyNote(startPoint, currPoint);
 					notes.add(note);
 				}
@@ -116,7 +122,9 @@ public class PhotoComponent extends JComponent {
 			@Override
 			public void mouseDragged(MouseEvent e) {
 				// draw when flipped
-				if (flipped) {
+				if (!flipped && SwingUtilities.isRightMouseButton(e)) {
+					stroke.add(new Point(e.getX(), e.getY()));
+				} else if (flipped) {
 					
 					if (annotationMode == "Drawing") {
 						Point point = new Point(e.getX(), e.getY());
@@ -168,7 +176,14 @@ public class PhotoComponent extends JComponent {
 			}
 
 		} else if (!flipped) {
+			//draws image
 			g2d.drawImage(image, leftPos, topPos, this);
+
+			//draws stroke
+			g2d.setColor(Color.RED);
+			for (Point p : stroke) {
+				g2d.fillOval((int) p.getX(), (int) p.getY(), 10, 10);
+			}
 		}
 	}
 }
