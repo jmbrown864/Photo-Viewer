@@ -1,6 +1,7 @@
 *.class
 Album.mf.txt
 Brown.zip
+Brown/
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
