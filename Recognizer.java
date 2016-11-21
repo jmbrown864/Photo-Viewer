@@ -7,8 +7,10 @@ public class Recognizer {
 
 	public enum Gesture {
 
-		NEXT(new String[] {"SE", "SW"}),
-		PREV(new String[] {"SW", "SE"});
+		NEXT (new String[] {"SE", ".", "SW"}),
+		PREV (new String[] {"SW", ".", "SE"}),
+		DEL  (new String[] {"SE", "E", "NE", "N", "NW", "W", "S"}),
+		NONE (new String[] {"."});
 
 		public final String[] template;
 
@@ -18,6 +20,7 @@ public class Recognizer {
 	}
 
 	private final ArrayList<Pattern> gestures = new ArrayList<Pattern>();
+	public Gesture currentGesture = Gesture.NONE;
 
 	public Recognizer() {
 		
@@ -27,12 +30,30 @@ public class Recognizer {
 
 	}
 
+	public Gesture getCurrentGesture() {
+		return currentGesture;
+	}
+
+	public void setCurrentGesture(Gesture name) {
+		currentGesture = name;
+	}
+
+	public ArrayList<Pattern> getGesturesAsRegex() {
+		return gestures;
+	}
+
 	public String defineRegex(String[] template) {
 		
 		StringBuffer buffer = new StringBuffer();
+		
+		buffer.append("^"); // matches the beginning of a string
+		buffer.append(".{0,2}"); // matches between 0 and 2 of any character
 
 		for (int i = 0; i < template.length; i++) {
 			switch (template[i]) {
+				case "." :
+					buffer.append(".{0,2}");
+					break;
 				case "N" : 
 					buffer.append("[ANB]+");
 					break;
@@ -66,6 +87,9 @@ public class Recognizer {
 					break;
 			}
 		}
+
+		buffer.append(".{0,2}"); // matches up to 2 of any character
+		buffer.append("$"); // matches the end of a string
 
 		return buffer.toString();
 	}
@@ -111,16 +135,16 @@ public class Recognizer {
 	}
 
 	public Gesture match(String vector) {
-		int counter = 0;
-
-		for (Pattern p : gestures) {
-			if (p.matcher(vector).find()) {
-				return Gesture.values()[counter];
+		
+		for (int i = 0; i < gestures.size(); i++) {
+		
+			if (gestures.get(i).matcher(vector).find()) {
+				System.out.println(Gesture.values()[i].name());
+				return Gesture.values()[i];
 			}
-
-			counter++;
 		}
 
+		System.out.println("Didn't find it.");
 		return null;
 	}
 

@@ -29,6 +29,7 @@ public class PhotoComponent extends JComponent {
 	// Recognizer
 	Recognizer r = new Recognizer();
 	ArrayList<Point> stroke = new ArrayList<Point>();
+	String strokeVector = null;
 
 	public PhotoComponent(File path) {
 
@@ -61,6 +62,14 @@ public class PhotoComponent extends JComponent {
 
 	public void setAnnotationMode(JToggleButton mode) {
 		this.annotationMode = mode.getLabel();
+	}
+
+	public ArrayList<Point> getStroke() {
+		return stroke;
+	}
+
+	public String getStrokeVector() {
+		return strokeVector;
 	}
 
 	public void addStickyNotes() {
@@ -106,7 +115,8 @@ public class PhotoComponent extends JComponent {
 			public void mouseReleased(MouseEvent e) {
 				// show drawing on mouse release
 				if (!flipped && stroke.size() > 0) {
-					System.out.println(r.match(r.buildVector(stroke)).name());
+					strokeVector = r.buildVector(stroke);
+					System.out.println("PC Stroke Vector: " + strokeVector);
 				} else if (annotationMode == "Text") {
 					StickyNote note = new StickyNote(startPoint, currPoint);
 					notes.add(note);

@@ -3,8 +3,10 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
-public class PhotoViewer implements ActionListener {
+public class PhotoViewer implements ActionListener, ChangeListener {
 
 	// Status label needs to be global so it can be changed on any action
 	JLabel status = new JLabel("Status");
@@ -20,7 +22,7 @@ public class PhotoViewer implements ActionListener {
 
 	// Content Panel needs to be global for updating photo views
 	JPanel contentPanel;
-	LightTable lightTable = new LightTable();;
+	LightTable lightTable = new LightTable();
 
 	public PhotoViewer() {
 		init();
@@ -45,6 +47,12 @@ public class PhotoViewer implements ActionListener {
 		main.add(createContentPanel(main, tools, statusBar), BorderLayout.CENTER);
 
 		main.setVisible(true);
+	}
+
+	public void stateChanged(ChangeEvent e) {
+		if (e.getSource() == lightTable.getPrimaryPhoto().getPhotoComponent()) {
+			System.out.println("Found a change!");
+		}
 	}
 
 	public JMenuBar createMenu() {
@@ -256,7 +264,7 @@ public class PhotoViewer implements ActionListener {
 		if (e.getSource() == deleteFile) {
 			ThumbnailComponent toDelete = lightTable.getSelectedPhoto();
 			lightTable.removePhoto(toDelete);
-			status.setText("File has been deleted.");
+			status.setText("Photo has been deleted.");
 		}
 
 		// Exit application
@@ -324,6 +332,28 @@ public class PhotoViewer implements ActionListener {
 		if (e.getSource() == backward) {
 			lightTable.previousPhoto();
 			status.setText("Switched to previous photo.");
+		}
+
+		Recognizer r = new Recognizer();
+		if (lightTable.getPrimaryPhoto() != null) {
+			PhotoComponent currPhoto = lightTable.getPrimaryPhoto().getPhotoComponent();
+			if (currPhoto.getStrokeVector() != null) {
+				String strokeVector = currPhoto.getStrokeVector();
+				Recognizer.Gesture currGesture = r.match(strokeVector);
+				System.out.println(currGesture.name());
+				switch (currGesture) {
+					case NONE:
+						break;
+					case NEXT:
+						status.setText("Switched to next photo.");
+						break;
+					case PREV:
+						status.setText("Switched to previous photo.");
+						break; 
+					case DEL:
+						status.setText("Photo has been deleted.")
+				}
+			}
 		}
 	}
 

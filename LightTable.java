@@ -16,16 +16,41 @@ public class LightTable extends JPanel {
 	ThumbnailComponent primaryPhoto = null;
 	ArrayList<ThumbnailComponent> thumbnails = new ArrayList<ThumbnailComponent>();
 
+	// Gesture Recognizer
+	Recognizer r = new Recognizer();
+
 	public LightTable() {
 
 		// this.setPreferredSize(new Dimension(holder.getWidth(), holder.getHeight()));
 		this.setLayout(new BorderLayout());
 		// this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
 		this.setBackground(Color.GRAY);
+		this.addListeners();
+	}
 
-// RECOGNIZER STUFF ===========================================================
-		Recognizer r = new Recognizer();
-		System.out.println(r.defineRegex(Recognizer.Gesture.NEXT.template));
+	public void addListeners() {
+		addMouseListener(new MouseAdapter() {
+			@Override 
+			public void mouseClicked(MouseEvent e) {
+				System.out.println("I'm listening");
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				System.out.println("I'm listening!");
+				//Process Recognizer
+				if (SwingUtilities.isRightMouseButton(e)) {
+					String gesture = getRecognizer();
+					switch (gesture) {
+						default:
+							break;
+						case "NEXT":
+							System.out.println("found next");
+							break;
+					}
+				}
+			}
+		});
 	}
 
 	public void setViewMode(JRadioButtonMenuItem mode) {
@@ -42,6 +67,10 @@ public class LightTable extends JPanel {
 		for (ThumbnailComponent thumb : thumbnails) {
 			thumb.getPhotoComponent().setAnnotationMode(mode);
 		}
+	}
+
+	public ThumbnailComponent getPrimaryPhoto() {
+		return primaryPhoto;
 	}
 
 	public ArrayList<ThumbnailComponent> getThumbnails() {
@@ -234,6 +263,19 @@ public class LightTable extends JPanel {
 		}
 
 		return grid;
+	}
+
+	public String getRecognizer() {
+		if (primaryPhoto != null) {
+			String strokeVector = primaryPhoto.getPhotoComponent().getStrokeVector();
+			System.out.println("Light table stroke vector: " + strokeVector);
+
+			if (strokeVector != null) {
+				return r.match(strokeVector).name();	
+			}
+		}
+		
+		return null;
 	}
 
 	protected void paintComponent(Graphics g) {
