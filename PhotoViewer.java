@@ -50,9 +50,7 @@ public class PhotoViewer implements ActionListener, ChangeListener {
 	}
 
 	public void stateChanged(ChangeEvent e) {
-		if (e.getSource() == lightTable.getPrimaryPhoto().getPhotoComponent()) {
-			System.out.println("Found a change!");
-		}
+		if (e.getSource() == contentPanel) { System.out.println("Something changed!"); }
 	}
 
 	public JMenuBar createMenu() {
@@ -343,15 +341,83 @@ public class PhotoViewer implements ActionListener, ChangeListener {
 				System.out.println(currGesture.name());
 				switch (currGesture) {
 					case NONE:
+						status.setText("Gesture was not recognized.");
+						currPhoto.clearStroke();
 						break;
 					case NEXT:
+						lightTable.nextPhoto();
 						status.setText("Switched to next photo.");
+						currPhoto.clearStroke();
 						break;
 					case PREV:
+						lightTable.previousPhoto();
 						status.setText("Switched to previous photo.");
+						currPhoto.clearStroke();
 						break; 
-					case DEL:
-						status.setText("Photo has been deleted.")
+					case DELETE:
+						ThumbnailComponent toDelete = lightTable.getSelectedPhoto();
+						lightTable.removePhoto(toDelete);
+						status.setText("Photo has been deleted.");
+						currPhoto.clearStroke();
+						break;
+					case VACA:
+						if (!vacation.isSelected()) {
+							vacation.setSelected(true);
+							status.setText("Photo has been tagged as: Vacation"); 
+						} else if (vacation.isSelected()) {
+							vacation.setSelected(false);
+							status.setText("Photo has been removed from tag: Vacation");
+						}
+						currPhoto.clearStroke();
+						break;
+					case SCHOOL:
+						if (!school.isSelected()) { 
+							school.setSelected(true);
+							status.setText("Photo has been tagged as: School"); 
+						} else if (school.isSelected()) {
+							school.setSelected(false);
+							status.setText("Photo has been removed from tag: School");
+						}
+						currPhoto.clearStroke();
+						break;
+					case HOLIDAY:
+						if (!holidays.isSelected()) { 
+							holidays.setSelected(true);
+							status.setText("Photo has been tagged as: Holidays"); 
+						} else if (holidays.isSelected()) {
+							holidays.setSelected(false);
+							status.setText("Photo has been removed from tag: Holidays");
+						}
+						currPhoto.clearStroke();
+						break;
+					case WORK:
+						if (!work.isSelected()) { 
+							work.setSelected(true);
+							status.setText("Photo has been tagged as: Work"); 
+						} else if (work.isSelected()) {
+							work.setSelected(false);
+							status.setText("Photo has been removed from tag: Work");
+						}
+						currPhoto.clearStroke();
+						break;
+					case DRAWING:
+						if (!drawing.isSelected()) {
+							status.setText("Switched to drawing mode.");
+							drawing.setSelected(true);
+							text.setSelected(false);
+							lightTable.setAnnotationMode(drawing);
+						}
+						currPhoto.clearStroke();
+						break;
+					case TEXT:
+						if (!text.isSelected()) {
+							status.setText("Switched to text mode.");
+							text.setSelected(true);
+							drawing.setSelected(false);
+							lightTable.setAnnotationMode(text);
+						}
+						currPhoto.clearStroke();
+						break;
 				}
 			}
 		}

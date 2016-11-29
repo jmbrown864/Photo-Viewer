@@ -31,6 +31,8 @@ public class PhotoComponent extends JComponent {
 	ArrayList<Point> stroke = new ArrayList<Point>();
 	String strokeVector = null;
 
+	LightTable lt = new LightTable();
+
 	public PhotoComponent(File path) {
 
 		try {
@@ -64,8 +66,9 @@ public class PhotoComponent extends JComponent {
 		this.annotationMode = mode.getLabel();
 	}
 
-	public ArrayList<Point> getStroke() {
-		return stroke;
+	public void clearStroke() {
+		stroke.clear();
+		repaint();
 	}
 
 	public String getStrokeVector() {

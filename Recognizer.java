@@ -9,7 +9,13 @@ public class Recognizer {
 
 		NEXT (new String[] {"SE", ".", "SW"}),
 		PREV (new String[] {"SW", ".", "SE"}),
-		DEL  (new String[] {"SE", "E", "NE", "N", "NW", "W", "S"}),
+		DELETE (new String[] {"SE", "E", "NE", "N", "NW", "W", "S"}),
+		VACA (new String[] {"SW", "E", "NW"}),
+		SCHOOL (new String[] {"S", "E", "N", "W"}),
+		HOLIDAY (new String[] {"S", "E", "NW"}),
+		WORK (new String[] {"SE", "NE", "SE", "NE"}),
+		DRAWING (new String[] {"S", "NE", "N", "NW"}),
+		TEXT (new String[] {"E", "W", "S"}),
 		NONE (new String[] {"."});
 
 		public final String[] template;
@@ -145,7 +151,7 @@ public class Recognizer {
 		}
 
 		System.out.println("Didn't find it.");
-		return null;
+		return Gesture.NONE;
 	}
 
 }
