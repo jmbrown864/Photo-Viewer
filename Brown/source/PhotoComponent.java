@@ -26,13 +26,6 @@ public class PhotoComponent extends JComponent {
 	// hold sticky notes
 	ArrayList<StickyNote> notes = new ArrayList<StickyNote>();
 
-	// Recognizer
-	Recognizer r = new Recognizer();
-	ArrayList<Point> stroke = new ArrayList<Point>();
-	String strokeVector = null;
-
-	LightTable lt = new LightTable();
-
 	public PhotoComponent(File path) {
 
 		try {
@@ -64,15 +57,6 @@ public class PhotoComponent extends JComponent {
 
 	public void setAnnotationMode(JToggleButton mode) {
 		this.annotationMode = mode.getLabel();
-	}
-
-	public void clearStroke() {
-		stroke.clear();
-		repaint();
-	}
-
-	public String getStrokeVector() {
-		return strokeVector;
 	}
 
 	public void addStickyNotes() {
@@ -117,10 +101,7 @@ public class PhotoComponent extends JComponent {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				// show drawing on mouse release
-				if (!flipped && stroke.size() > 0) {
-					strokeVector = r.buildVector(stroke);
-					System.out.println("PC Stroke Vector: " + strokeVector);
-				} else if (annotationMode == "Text") {
+				if (annotationMode == "Text") {
 					StickyNote note = new StickyNote(startPoint, currPoint);
 					notes.add(note);
 				}
@@ -135,9 +116,7 @@ public class PhotoComponent extends JComponent {
 			@Override
 			public void mouseDragged(MouseEvent e) {
 				// draw when flipped
-				if (!flipped && SwingUtilities.isRightMouseButton(e)) {
-					stroke.add(new Point(e.getX(), e.getY()));
-				} else if (flipped) {
+				if (flipped) {
 					
 					if (annotationMode == "Drawing") {
 						Point point = new Point(e.getX(), e.getY());
@@ -148,8 +127,7 @@ public class PhotoComponent extends JComponent {
 						currPoint = new Point(e.getX(), e.getY());
 					}
 
-				} 
-
+				}
 				repaint();
 			}
 
@@ -189,14 +167,7 @@ public class PhotoComponent extends JComponent {
 			}
 
 		} else if (!flipped) {
-			//draws image
 			g2d.drawImage(image, leftPos, topPos, this);
-
-			//draws stroke
-			g2d.setColor(Color.RED);
-			for (Point p : stroke) {
-				g2d.fillOval((int) p.getX(), (int) p.getY(), 10, 10);
-			}
 		}
 	}
 }
