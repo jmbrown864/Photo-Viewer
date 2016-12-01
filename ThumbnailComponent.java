@@ -16,8 +16,9 @@ public class ThumbnailComponent extends JPanel {
 
 		// panel to hold the photo
 		// JPanel thumbPanel = new JPanel();
-		this.setPreferredSize(new Dimension(photo.getImage().getWidth() + 10, photo.getImage().getHeight() + 10));
-		// this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+		// this.setPreferredSize(new Dimension(photo.getImage().getWidth() + 10, photo.getImage().getHeight() + 30));
+		this.setMaximumSize(new Dimension(photo.getImage().getWidth(), photo.getImage().getHeight()));
+		// this.setBorder(BorderFactory.createLineBorder(Color.BLUE, 3));
 		this.setBackground(Color.GRAY);
 		this.setLayout(new BorderLayout());
 		this.add(photo, BorderLayout.CENTER);
@@ -62,5 +63,7 @@ public class ThumbnailComponent extends JPanel {
 
 		graphics2D.scale(0.5, 0.5);
 		graphics2D.drawImage(photo.getImage(), 10, 10, this);
+
+		// graphics2D.drawRect(3/2, 3/2, photo.getImage().getWidth() - 3/2, (int) photo.getImage().getHeight() / 10 - 3);
 	}
 }

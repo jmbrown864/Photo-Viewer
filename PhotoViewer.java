@@ -13,7 +13,7 @@ public class PhotoViewer implements ActionListener, ChangeListener {
 
 	// Menu items need to be global for action events
 	JMenuItem importFile, deleteFile, exitApp;
-	JRadioButtonMenuItem photoView, gridView, splitView;
+	JRadioButtonMenuItem photoView, gridView, splitView, magnetView;
 
 	// Tool bar items need to be global for action events
 	JToggleButton vacation, school, holidays, work;
@@ -23,6 +23,9 @@ public class PhotoViewer implements ActionListener, ChangeListener {
 	// Content Panel needs to be global for updating photo views
 	JPanel contentPanel;
 	LightTable lightTable = new LightTable();
+
+	// for magnet view
+	MagnetTable mt = new MagnetTable();
 
 	public PhotoViewer() {
 		init();
@@ -96,6 +99,11 @@ public class PhotoViewer implements ActionListener, ChangeListener {
 		splitView.addActionListener(this);
 		viewGroup.add(splitView);
 		viewMenu.add(splitView);
+
+		magnetView = new JRadioButtonMenuItem("Magnet View");
+		magnetView.addActionListener(this);
+		viewGroup.add(magnetView);
+		viewMenu.add(magnetView);
 
 		menuBar.add(viewMenu);
 
@@ -288,28 +296,106 @@ public class PhotoViewer implements ActionListener, ChangeListener {
 			status.setText("Switched to split view.");
 		}
 
-		if (e.getSource() == vacation && vacation.isSelected()) {
-			status.setText("Photo has been tagged as: Vacation");
-		} else if (e.getSource() == vacation && !vacation.isSelected()) {
-			status.setText("Photo has been removed from tag: Vacation");
+		//switch to magnet view
+		if (e.getSource() == magnetView) {
+			lightTable.hide();
+			contentPanel.add(mt, BorderLayout.CENTER);
+			status.setText("Switched to magnet view.");
 		}
 
-		if (e.getSource() == school && school.isSelected()) {
-			status.setText("Photo has been tagged as: School");
-		} else if (e.getSource() == school && !school.isSelected()) {
-			status.setText("Photo has been removed from tag: School");
+		if (e.getSource() == vacation) {
+			Draggable vaca = new Draggable("Vacation");
+
+			if (!magnetView.isSelected()) {
+
+				if (vacation.isSelected()) {
+					status.setText("Photo has been tagged as: Vacation");		
+				} else if (!vacation.isSelected()) {
+					status.setText("Photo has been removed from tag: Vacation");		
+				}
+
+			} else if (magnetView.isSelected()) {
+
+				if (vacation.isSelected()) {
+					mt.add(vaca);
+					mt.revalidate();
+					mt.repaint();
+				} else if (!vacation.isSelected()) {
+					// remove draggable element 
+					mt.remove(vaca);
+					System.out.println("Removed...supposedly");
+					mt.revalidate();
+					mt.repaint();
+				}
+			}
 		}
 
-		if (e.getSource() == holidays && holidays.isSelected()) {
-			status.setText("Photo has been tagged as: Holidays");
-		} else if (e.getSource() == holidays && !holidays.isSelected()) {
-			status.setText("Photo has been removed from tag: Holidays");
+		if (e.getSource() == school) {
+			Draggable scho = new Draggable("School");
+
+			if (!magnetView.isSelected()) {
+
+				if (school.isSelected()) {
+					status.setText("Photo has been tagged as: School");		
+				} else if (!school.isSelected()) {
+					status.setText("Photo has been removed from tag: School");		
+				}
+
+			} else if (magnetView.isSelected()) {
+				if (school.isSelected()) {
+					mt.add(scho);
+					mt.revalidate();
+					mt.repaint();
+				} else if (!school.isSelected()) {
+					// remove draggable element 
+				}
+			}
 		}
 
-		if (e.getSource() == work && work.isSelected()) {
-			status.setText("Photo has been tagged as: Work");
-		} else if (e.getSource() == work && !work.isSelected()) {
-			status.setText("Photo has been removed from tag: Work");
+		if (e.getSource() == holidays) {
+			Draggable holi = new Draggable("Holidays");
+
+			if (!magnetView.isSelected()) {
+
+				if (holidays.isSelected()) {
+					status.setText("Photo has been tagged as: Holidays");		
+				} else if (!holidays.isSelected()) {
+					status.setText("Photo has been removed from tag: Holidays");		
+				}
+
+			} else if (magnetView.isSelected()) {
+
+				if (holidays.isSelected()) {
+					mt.add(holi);
+					mt.revalidate();
+					mt.repaint();
+				} else if (!holidays.isSelected()) {
+					// remove draggable element 
+				}
+			}
+		}
+
+		if (e.getSource() == work) {
+			Draggable workDrag = new Draggable("Work");
+
+			if (!magnetView.isSelected()) {
+
+				if (work.isSelected()) {
+					status.setText("Photo has been tagged as: Work");		
+				} else if (!work.isSelected()) {
+					status.setText("Photo has been removed from tag: Work");		
+				}
+
+			} else if (magnetView.isSelected()) {
+
+				if (work.isSelected()) {
+					mt.add(workDrag);
+					mt.revalidate();
+					mt.repaint();
+				} else if (!work.isSelected()) {
+					// remove draggable element 
+				}
+			}
 		}
 
 		if (e.getSource() == drawing) {
