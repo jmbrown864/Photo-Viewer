@@ -300,6 +300,12 @@ public class PhotoViewer implements ActionListener, ChangeListener {
 		if (e.getSource() == magnetView) {
 			lightTable.hide();
 			contentPanel.add(mt, BorderLayout.CENTER);
+			mt.createObjects();
+
+			for (MoveObject m : mt.getObjects()) {
+				mt.add(m);
+			}
+
 			status.setText("Switched to magnet view.");
 		}
 

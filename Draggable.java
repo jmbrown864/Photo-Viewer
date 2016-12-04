@@ -15,7 +15,6 @@ public class Draggable extends JComponent {
 
 	public Draggable(String text) {
 		this.setBorder(new LineBorder(Color.BLUE, 3));
-		this.setBackground(Color.WHITE);
 		this.setBounds(0, 0, 100, 100);
 		this.text = text;
 
@@ -30,10 +29,14 @@ public class Draggable extends JComponent {
 			public void mousePressed(MouseEvent e) {
 				screenX = e.getXOnScreen();
 				screenY = e.getYOnScreen();
+				myX = getX();
+				myY = getY();
 			}
 
 			@Override
-			public void mouseReleased(MouseEvent e) {}
+			public void mouseReleased(MouseEvent e) {
+				//put the phots underneath the elements
+			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {}
