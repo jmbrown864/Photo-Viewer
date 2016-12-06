@@ -1,11 +1,18 @@
 import java.awt.*;
+import java.awt.event.*;
 import java.util.*;
 import java.util.Random;
 import javax.swing.*;
+import javax.swing.Timer;
 import javax.swing.border.*;
 
 //OBJECTS THAT'LL MOVE AROUND ON THE SCREEN	
 public class MoveObject extends JComponent {
+
+	private Timer timer;
+	public final static int TENTH_OF_A_SECOND = 100;
+	public int numFrames = 15;
+	public int numIterations = 0;
 	
 	private String tag = "";
 
@@ -22,8 +29,33 @@ public class MoveObject extends JComponent {
 		return tag;
 	}
 
+	public int getStartX() {
+		return getX();
+	}
+
+	public int getStartY() {
+		return getY();
+	}
+
 	public void moveToMagnet(int x, int y) {
-		setLocation(x, y);
+
+		int startX = getStartX();
+		int startY = getStartY();
+
+		timer = new Timer(TENTH_OF_A_SECOND, new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (numIterations++ >= numFrames) {
+					timer.stop();
+				} else {
+					setLocation(startX + numIterations * (x - startX)/numFrames, 
+								startY + numIterations * (y - startY)/numFrames);
+					revalidate();
+					repaint();
+				}
+			}
+		});
+
+		timer.start();
 	}
 
 	protected void paintComponent(Graphics g) {

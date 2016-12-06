@@ -260,6 +260,11 @@ public class PhotoViewer implements ActionListener, ChangeListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
+
+		Draggable vaca = new Draggable("Vacation");
+		Draggable scho = new Draggable("School");
+		Draggable holi = new Draggable("Holidays");
+		Draggable workDrag = new Draggable("Work");
 		
 		// Import file(s)
 		if (e.getSource() == importFile) {
@@ -310,7 +315,6 @@ public class PhotoViewer implements ActionListener, ChangeListener {
 		}
 
 		if (e.getSource() == vacation) {
-			Draggable vaca = new Draggable("Vacation");
 
 			if (!magnetView.isSelected()) {
 
@@ -323,9 +327,19 @@ public class PhotoViewer implements ActionListener, ChangeListener {
 			} else if (magnetView.isSelected()) {
 
 				if (vacation.isSelected()) {
+
 					mt.add(vaca);
+					vaca.setMovingObjects(mt.getObjects());
+
+					for (MoveObject m : mt.getObjects()) {
+						if (m.getTag() == "Vacation") { 
+							m.moveToMagnet(vaca.getX(), vaca.getY());
+						}
+					}
+
 					mt.revalidate();
 					mt.repaint();
+
 				} else if (!vacation.isSelected()) {
 					// remove draggable element 
 					mt.remove(vaca);
@@ -337,7 +351,6 @@ public class PhotoViewer implements ActionListener, ChangeListener {
 		}
 
 		if (e.getSource() == school) {
-			Draggable scho = new Draggable("School");
 
 			if (!magnetView.isSelected()) {
 
@@ -349,9 +362,19 @@ public class PhotoViewer implements ActionListener, ChangeListener {
 
 			} else if (magnetView.isSelected()) {
 				if (school.isSelected()) {
+					
 					mt.add(scho);
+
+					for (MoveObject m : mt.getObjects()) {
+						if (m.getTag() == "School") { 
+							m.moveToMagnet(scho.getX(), scho.getY());
+						}
+					}
+
+
 					mt.revalidate();
 					mt.repaint();
+
 				} else if (!school.isSelected()) {
 					// remove draggable element 
 				}
@@ -359,7 +382,6 @@ public class PhotoViewer implements ActionListener, ChangeListener {
 		}
 
 		if (e.getSource() == holidays) {
-			Draggable holi = new Draggable("Holidays");
 
 			if (!magnetView.isSelected()) {
 
@@ -372,9 +394,18 @@ public class PhotoViewer implements ActionListener, ChangeListener {
 			} else if (magnetView.isSelected()) {
 
 				if (holidays.isSelected()) {
+					
 					mt.add(holi);
+
+					for (MoveObject m : mt.getObjects()) {
+						if (m.getTag() == "Holidays") { 
+							m.moveToMagnet(holi.getX(), holi.getY());
+						}
+					}
+
 					mt.revalidate();
 					mt.repaint();
+
 				} else if (!holidays.isSelected()) {
 					// remove draggable element 
 				}
@@ -382,7 +413,6 @@ public class PhotoViewer implements ActionListener, ChangeListener {
 		}
 
 		if (e.getSource() == work) {
-			Draggable workDrag = new Draggable("Work");
 
 			if (!magnetView.isSelected()) {
 
@@ -395,9 +425,18 @@ public class PhotoViewer implements ActionListener, ChangeListener {
 			} else if (magnetView.isSelected()) {
 
 				if (work.isSelected()) {
+					
 					mt.add(workDrag);
+
+					for (MoveObject m : mt.getObjects()) {
+						if (m.getTag() == "Work") { 
+							m.moveToMagnet(workDrag.getX(), workDrag.getY());
+						}
+					}
+
 					mt.revalidate();
 					mt.repaint();
+
 				} else if (!work.isSelected()) {
 					// remove draggable element 
 				}
